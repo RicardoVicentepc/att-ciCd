@@ -35,4 +35,5 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        tags: eleradevricardo/repositorio:tagname 
+        push: true
+        tags: eleradevricardo/repositorio:latest  # substitua "latest" pela tag desejada
