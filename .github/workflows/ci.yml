@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
@@ -36,4 +36,28 @@ jobs:
       with:
         context: .
         push: true
-        tags: eleradevricardo/repositorio:latest  # substitua "latest" pela tag desejada
+        tags: eleradevricardo/repositorio 
+
+  deploy:
+    runs-on: self-hosted
+
+    needs: build
+
+    steps:
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USER }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Pull Docker image
+      run: docker pull eleradevricardo/repositorio
+
+    - name: Stop and Remove existing container
+      run: |
+        docker stop app || true
+        docker rm app || true
+
+    - name: Run new container
+      run: |
+        docker run -d --name app -p 8080:8080 eleradevricardo/repositorio
