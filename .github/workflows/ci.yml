@@ -18,13 +18,19 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '11'
-        distribution: 'adopt' 
+        distribution: 'adopt'  # ou 'temurin', 'zulu', dependendo da sua preferência
 
-    - name: Build with Maven
-      run: mvn clean install
+    - name: Verificar diretório atual
+      run: pwd
 
-    - name: Run Tests
-      run: mvn test
+    - name: Listar arquivos no diretório
+      run: ls -la
+
+    - name: Build with Gradle
+      run: ./gradlew build  # Comando do Gradle para compilar o projeto
+
+    - name: Run Tests with Gradle
+      run: ./gradlew test  # Comando do Gradle para rodar os testes
 
     - name: Login to DockerHub
       uses: docker/login-action@v2
